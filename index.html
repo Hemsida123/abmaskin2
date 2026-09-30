@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0c1311">
+<title>AB Maskin Support – Markarbeten, dränering och asfaltering</title>
+<meta name="description" content="Markarbeten och entreprenad med hög kvalitet. Dränering, asfaltering, stensättning m.m. Få offert idag – tryggt utfört från start till klart.">
+<link rel="icon" href="https://abmaskin.se/wp-content/uploads/sites/24/2025/01/cropped-10001-1-270x270.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&display=swap" rel="stylesheet">
+<!--
+DESIGN
+Känsla: tung maskin, exakt mätning. Mörk granit, grus och en hydraulgul signal.
+Typ: Archivo (variabel bredd). Expanded + svart vikt för rubriker, normal bredd för brödtext, condensed för små etiketter.
+Färg: Berg #16191A, Skiffer #202424, Grus #E8E5DE, Sten #9AA09A, Signal #E4AA2C. Hero: filmisk mörkgrön gradering.
+Motiv: lantmätarens sikte – hörnvinklar och siktkors som ramar in bilder och data.
+Logga: knockas ut med SVG-filter (vit bakgrund blir transparent, loggan blir vit) så den smälter in i mörka ytor.
+-->
+<style>
+:root{
+  --berg:#16191A; --skiffer:#202424; --grus:#E8E5DE; --sten:#9AA09A; --signal:#E4AA2C; --signal-ink:#1A1400;
+  --line:rgba(232,229,222,.14); --line-dark:rgba(22,25,26,.14);
+  --pad:clamp(20px,5vw,72px); --max:1360px; --nav:84px;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--nav) + env(safe-area-inset-top,0px));-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--berg);color:var(--grus);font-family:"Archivo",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:17px;line-height:1.6;font-variation-settings:"wdth" 100;-webkit-font-smoothing:antialiased;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+img{max-width:100%;display:block}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--signal);outline-offset:3px}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--pad)}
+.display{font-weight:850;font-variation-settings:"wdth" 125;letter-spacing:-.02em;line-height:.94;margin:0}
+.tag{font-variation-settings:"wdth" 75;font-weight:600;font-size:13px;letter-spacing:.04em;color:var(--sten)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:16px 26px;font-weight:700;font-size:15px;text-decoration:none;border:1px solid transparent;cursor:pointer;transition:background .2s,color .2s,border-color .2s,transform .15s}
+.btn:active{transform:scale(.98)}
+.btn-signal{background:var(--signal);color:var(--signal-ink)}
+.btn-signal:hover{background:#F0BC45}
+.btn-ghost{border-color:rgba(232,229,222,.35);color:var(--grus);background:transparent}
+.btn-ghost:hover{border-color:var(--grus)}
+.btn-dark{background:var(--berg);color:var(--grus)}
+.btn-dark:hover{background:#000}
+.kicker{display:flex;align-items:center;gap:12px;margin:0 0 22px}
+.kicker::before{content:"";width:28px;height:2px;background:var(--signal);flex:none}
+
+/* Sikte-motiv */
+.sight{position:relative}
+.sight::before,.sight::after,.sight>.c3,.sight>.c4{content:"";position:absolute;width:18px;height:18px;border-color:var(--signal);border-style:solid;pointer-events:none;z-index:3}
+.sight::before{top:-1px;left:-1px;border-width:2px 0 0 2px}
+.sight::after{top:-1px;right:-1px;border-width:2px 2px 0 0}
+.sight>.c3{bottom:-1px;left:-1px;border-width:0 0 2px 2px}
+.sight>.c4{bottom:-1px;right:-1px;border-width:0 2px 2px 0}
+
+/* Logga (knockad) */
+.logo-svg{display:block;height:44px;width:auto;overflow:visible}
+
+/* ---------- Nav ---------- */
+.nav{position:fixed;top:0;left:0;right:0;z-index:60;padding-top:env(safe-area-inset-top,0px);transition:background .35s,border-color .35s;border-bottom:1px solid transparent}
+.nav.scrolled{background:rgba(12,19,17,.88);backdrop-filter:blur(14px) saturate(1.2);-webkit-backdrop-filter:blur(14px) saturate(1.2);border-color:var(--line)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;height:var(--nav);gap:24px}
+.logo{display:flex;align-items:center;text-decoration:none;position:relative;z-index:2}
+.nav-links{display:flex;gap:34px;list-style:none;margin:0;padding:0}
+.nav-links a{text-decoration:none;font-size:15px;font-weight:500;opacity:.8;transition:opacity .2s}
+.nav-links a:hover{opacity:1}
+.nav-cta{display:flex;align-items:center;gap:18px;position:relative;z-index:2}
+.nav-phone{text-decoration:none;font-weight:700;font-size:15px;font-variation-settings:"wdth" 90}
+.nav-cta .btn{padding:12px 20px}
+.burger{display:none;background:rgba(232,229,222,.06);border:1px solid var(--line);width:46px;height:46px;cursor:pointer;position:relative}
+.burger span{position:absolute;left:13px;right:13px;height:2px;background:var(--grus);transition:transform .35s cubic-bezier(.7,0,.2,1),opacity .2s}
+.burger span:nth-child(1){top:16px}.burger span:nth-child(2){top:22px}.burger span:nth-child(3){top:28px}
+.menu-open .burger span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+.menu-open .burger span:nth-child(2){opacity:0}
+.menu-open .burger span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+.mobile-menu{display:none}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;background:#0c1311;isolation:isolate}
+.hero-media{position:absolute;inset:0;overflow:hidden}
+.hero-bg{position:absolute;inset:-4%;width:108%;height:108%;object-fit:cover;object-position:60% 50%;filter:grayscale(.35) brightness(.62) contrast(1.35);transform:scale(1.12);animation:heroZoom 3.2s cubic-bezier(.2,.7,.2,1) forwards,drift 30s 3.2s ease-in-out infinite alternate}
+@keyframes heroZoom{to{transform:scale(1)}}
+@keyframes drift{to{transform:scale(1.05) translate(-1%,-1%)}}
+.hero-tint{position:absolute;inset:0;background:#1f4a3a;mix-blend-mode:color;opacity:.7;z-index:1}
+.hero-light{position:absolute;inset:0;z-index:1;background:
+  radial-gradient(60% 55% at 78% 0%,rgba(170,215,190,.28),transparent 70%),
+  radial-gradient(120% 90% at 55% 45%,transparent 35%,rgba(6,10,9,.85) 100%),
+  linear-gradient(180deg,rgba(6,10,9,.7) 0%,transparent 22%,transparent 50%,rgba(6,10,9,.97) 100%),
+  linear-gradient(90deg,rgba(6,10,9,.8) 0%,transparent 55%)}
+.hero-grain{position:absolute;inset:-50%;z-index:1;opacity:.12;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:grain 1.2s steps(6) infinite}
+@keyframes grain{0%,100%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-3%)}60%{transform:translate(-2%,-1%)}80%{transform:translate(3%,3%)}}
+@keyframes fadeIn{to{opacity:1}}
+.hud{position:absolute;inset:0;z-index:2;pointer-events:none}
+.hud .draw{stroke-dasharray:600;stroke-dashoffset:600;animation:draw 1.4s .9s cubic-bezier(.6,0,.2,1) forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.hud .pulse{transform-origin:75px 75px;animation:pulse 2.4s 2.3s ease-out infinite;opacity:0}
+@keyframes pulse{0%{transform:scale(1);opacity:.9}100%{transform:scale(5);opacity:0}}
+.hud-sight{position:absolute;left:60%;top:22%;width:150px;height:150px;overflow:visible}
+.hud-line{position:absolute;left:calc(60% + 150px);top:calc(22% + 15px);width:150px;height:60px;overflow:visible}
+.hud-label{position:absolute;left:calc(60% + 312px);top:calc(22% + 6px);width:200px;font-size:15px;line-height:1.35;opacity:0;animation:fadeIn .6s 2s forwards}
+.hud-label small{display:block;font-size:12px;color:var(--sten);margin-top:6px;font-variation-settings:"wdth" 75;letter-spacing:.04em}
+.hud-bars{position:absolute;right:max(var(--pad),calc((100% - var(--max))/2 + var(--pad)));top:calc(22% + 190px);width:260px;display:grid;gap:12px;opacity:0;animation:fadeIn .6s 2.2s forwards}
+.hud-bars div{display:grid;grid-template-columns:110px 1fr;align-items:center;gap:14px;font-size:12px;font-variation-settings:"wdth" 75;letter-spacing:.04em;color:#cfd6d0}
+.hud-bars i{height:3px;background:rgba(232,229,222,.14);position:relative;overflow:hidden}
+.hud-bars i::after{content:"";position:absolute;inset:0;width:var(--w);background:#8fd0a3;transform:scaleX(0);transform-origin:left;animation:fill 1.4s 2.4s cubic-bezier(.2,.7,.2,1) forwards}
+@keyframes fill{to{transform:scaleX(1)}}
+.hero-content{position:relative;z-index:3;padding-bottom:40px}
+.hero-title{font-size:clamp(46px,8vw,128px);text-shadow:0 10px 60px rgba(0,0,0,.5)}
+.hero-title span{display:block;overflow:hidden;padding-bottom:.04em}
+.hero-title span i{display:block;font-style:normal;transform:translateY(105%);animation:rise 1s cubic-bezier(.2,.8,.2,1) forwards}
+.hero-title span:nth-child(2) i{animation-delay:.12s}
+.hero-title span:nth-child(3) i{animation-delay:.24s;color:var(--signal)}
+@keyframes rise{to{transform:none}}
+.hero-row{display:flex;justify-content:space-between;align-items:flex-end;gap:40px;margin-top:32px;flex-wrap:wrap;opacity:0;animation:fadeIn .8s .7s forwards}
+.hero-lede{max-width:520px;font-size:clamp(16px,1.5vw,20px);line-height:1.55;color:#d6d3cb;margin:0}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+.hero-bar{position:relative;z-index:3;border-top:1px solid var(--line);background:rgba(6,10,9,.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.hero-bar .wrap{display:grid;grid-template-columns:repeat(4,1fr)}
+.stat{padding:20px 0 22px 24px;border-left:1px solid var(--line)}
+.stat:first-child{border-left:0;padding-left:0}
+.stat .tag{display:block;margin-bottom:4px}
+.stat b{display:block;font-size:clamp(26px,2.6vw,38px);font-weight:500;font-variation-settings:"wdth" 110;line-height:1.1}
+
+/* ---------- Partners ---------- */
+.partners{background:var(--grus);color:var(--berg);padding:34px 0;overflow:hidden;border-bottom:1px solid var(--line-dark);isolation:isolate}
+.partners-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;gap:20px}
+.partners-head .tag{color:#5f645e}
+.marquee{display:flex;align-items:center;width:max-content;animation:marq 40s linear infinite}
+.marquee:hover{animation-play-state:paused}
+.marquee svg{flex:none;width:150px;height:54px;margin:0 40px;opacity:.85}
+@keyframes marq{to{transform:translateX(-50%)}}
+
+/* ---------- Sektioner ---------- */
+section{position:relative}
+.sec{padding:clamp(80px,11vw,160px) 0}
+.light{background:var(--grus);color:var(--berg)}
+.light .tag{color:#61665f}
+.sec-head{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:end;margin-bottom:clamp(40px,6vw,80px)}
+.sec-head h2{font-size:clamp(38px,5.6vw,88px)}
+.sec-head p{margin:0;max-width:520px;justify-self:end;opacity:.78}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+
+/* Om oss */
+.about{display:grid;grid-template-columns:5fr 6fr;gap:clamp(40px,6vw,100px);align-items:center}
+.about-media{position:relative;aspect-ratio:4/5}
+.about-media img{width:100%;height:100%;object-fit:cover;object-position:50% 20%}
+.about-media .coord{position:absolute;left:-1px;bottom:-1px;background:var(--grus);color:var(--berg);padding:14px 18px;font-size:13px;line-height:1.4;font-variation-settings:"wdth" 80;z-index:4}
+.about h2{font-size:clamp(36px,4.8vw,72px);margin-bottom:28px}
+.about p{margin:0 0 20px;max-width:620px;opacity:.85}
+.checks{list-style:none;padding:0;margin:34px 0 40px;border-top:1px solid var(--line-dark)}
+.checks li{padding:16px 0 16px 40px;border-bottom:1px solid var(--line-dark);position:relative;font-weight:600}
+.checks li::before{content:"";position:absolute;left:0;top:50%;width:20px;height:20px;margin-top:-10px;border:1.5px solid var(--berg);border-radius:50%;background:radial-gradient(circle,var(--berg) 2px,transparent 3px)}
+
+/* Pelare */
+.pillars{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line)}
+.pillar{display:grid;grid-template-columns:1fr 1.1fr;border-bottom:1px solid var(--line);min-height:340px}
+.pillar:nth-child(odd){border-right:1px solid var(--line)}
+.pillar-img{overflow:hidden;position:relative}
+.pillar-img img{width:100%;height:100%;object-fit:cover;filter:saturate(.75);transition:transform .8s cubic-bezier(.2,.7,.2,1),filter .5s}
+.pillar-txt{padding:clamp(24px,3vw,44px);display:flex;flex-direction:column;justify-content:space-between;gap:24px}
+.pillar-txt h3{font-size:clamp(22px,2vw,28px);line-height:1.15;margin:0 0 12px;font-weight:750;font-variation-settings:"wdth" 110}
+.pillar-txt p{margin:0;color:#c9c6be;font-size:16px}
+
+/* Tjänster */
+.services{display:grid;grid-template-columns:1fr 1fr;gap:clamp(30px,5vw,80px);align-items:start}
+.svc-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--line-dark)}
+.svc-btn{width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line-dark);padding:14px 0;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;font-size:clamp(20px,2.2vw,30px);font-weight:700;font-variation-settings:"wdth" 112;color:rgba(22,25,26,.55);transition:padding .3s,color .2s,box-shadow .3s}
+.svc-btn:hover{color:var(--berg)}
+.svc-btn .ic{flex:none;width:28px;height:28px;border:1px solid var(--line-dark);position:relative;transition:transform .35s,background .2s,border-color .2s}
+.svc-btn .ic::before,.svc-btn .ic::after{content:"";position:absolute;left:50%;top:50%;background:currentColor}
+.svc-btn .ic::before{width:10px;height:1.5px;margin:-.75px 0 0 -5px}
+.svc-btn .ic::after{width:1.5px;height:10px;margin:-5px 0 0 -.75px;transition:transform .35s}
+li.open>.svc-btn{color:var(--berg);padding-left:16px;box-shadow:inset 4px 0 0 var(--signal)}
+li.open>.svc-btn .ic{background:var(--signal);border-color:var(--signal);color:var(--signal-ink)}
+li.open>.svc-btn .ic::after{transform:scaleY(0)}
+.svc-acc{display:none}
+.svc-panel{position:sticky;top:110px;background:var(--berg);color:var(--grus)}
+.svc-img{aspect-ratio:4/3;overflow:hidden;position:relative;background:#0c1311}
+.svc-img img{width:100%;height:100%;object-fit:cover;transition:opacity .35s}
+.svc-img .reticle{position:absolute;inset:0;z-index:2;pointer-events:none;width:100%;height:100%}
+.svc-body{padding:clamp(24px,3vw,40px)}
+.svc-body h3{font-size:clamp(28px,3vw,44px);margin:6px 0 14px;font-weight:850;font-variation-settings:"wdth" 120;line-height:1}
+.svc-body p{margin:0 0 26px;color:#cfccc4;min-height:5em}
+.svc-links{display:flex;gap:12px;flex-wrap:wrap}
+
+/* Process */
+.process{display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--line)}
+.step{padding:34px 26px 40px 0;position:relative}
+.step+.step{padding-left:26px;border-left:1px solid var(--line)}
+.step .n{font-size:60px;font-weight:850;font-variation-settings:"wdth" 125;color:transparent;-webkit-text-stroke:1px var(--sten);line-height:1;display:block;margin-bottom:30px}
+.step h3{margin:0 0 10px;font-size:20px;font-weight:750}
+.step p{margin:0;font-size:15px;color:#bdbab2}
+.step::before{content:"";position:absolute;top:-4px;left:0;width:7px;height:7px;background:var(--signal)}
+.step+.step::before{left:-4px}
+
+/* Galleri */
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.gallery button{display:block;width:100%;aspect-ratio:4/5;padding:0;border:0;background:#0c1311;cursor:zoom-in;position:relative;overflow:hidden}
+.gallery img{width:100%;height:100%;object-fit:cover;object-position:50% 25%;transition:transform .7s cubic-bezier(.2,.7,.2,1),filter .4s;filter:saturate(.85)}
+.gallery button::after{content:"";position:absolute;inset:12px;border:1px solid rgba(228,170,44,0);transition:border-color .3s}
+.gal-count{display:none}
+.lightbox{position:fixed;inset:0;z-index:100;background:rgba(8,11,10,.96);display:none;align-items:center;justify-content:center;padding:calc(70px + env(safe-area-inset-top,0px)) 20px calc(70px + env(safe-area-inset-bottom,0px))}
+.lightbox.open{display:flex;animation:fadeIn .25s forwards;opacity:0}
+.lightbox img{max-height:100%;max-width:100%;object-fit:contain}
+.lb-btn{position:absolute;background:rgba(232,229,222,.08);border:1px solid var(--line);width:52px;height:52px;cursor:pointer;font-size:22px;display:flex;align-items:center;justify-content:center}
+.lb-btn:hover{background:rgba(232,229,222,.18)}
+.lb-close{top:calc(14px + env(safe-area-inset-top,0px));right:14px}
+.lb-prev{left:14px;top:50%;margin-top:-26px}
+.lb-next{right:14px;top:50%;margin-top:-26px}
+.lb-count{position:absolute;bottom:calc(22px + env(safe-area-inset-bottom,0px));left:0;right:0;text-align:center}
+
+/* Varför */
+.why{display:grid;grid-template-columns:1.1fr 1fr;min-height:720px}
+.why-img{position:relative;overflow:hidden}
+.why-img img{width:100%;height:100%;object-fit:cover}
+.why-txt{padding:clamp(50px,7vw,110px) var(--pad);display:flex;flex-direction:column;justify-content:center}
+.why-txt h2{font-size:clamp(36px,4.8vw,74px);margin-bottom:28px}
+.why-txt p{margin:0 0 28px;color:#cfccc4;max-width:560px}
+.why-list{list-style:none;margin:0 0 40px;padding:0}
+.why-list li{display:flex;gap:18px;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--line);font-weight:600;font-size:18px}
+.why-list li::before{content:"";flex:none;width:10px;height:10px;border:2px solid var(--signal);transform:rotate(45deg) translateY(-2px)}
+
+/* Utmärkelser */
+.award{display:grid;grid-template-columns:auto 1fr auto;gap:clamp(30px,5vw,80px);align-items:center;border-top:1px solid var(--line-dark);border-bottom:1px solid var(--line-dark);padding:50px 0}
+.award img{width:clamp(200px,24vw,320px);height:auto;mix-blend-mode:multiply}
+.award h2{font-size:clamp(32px,4.2vw,64px);margin-bottom:18px}
+.award p{margin:0;max-width:640px;opacity:.8}
+.award-years{display:flex;gap:30px}
+.award-years div{text-align:right}
+.award-years b{display:block;font-size:clamp(40px,5vw,72px);font-weight:900;font-variation-settings:"wdth" 125;line-height:1}
+
+/* Orter */
+.areas{display:grid;grid-template-columns:1fr 1.3fr;gap:clamp(30px,5vw,80px)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;align-content:flex-start}
+.chip{border:1px solid var(--line);background:transparent;padding:10px 16px;cursor:pointer;font-size:15px;font-weight:600;white-space:nowrap;transition:background .2s,border-color .2s,color .2s}
+.chip:hover{border-color:var(--grus)}
+.chip[aria-pressed="true"]{background:var(--signal);border-color:var(--signal);color:var(--signal-ink)}
+.area-panel h3{font-size:clamp(34px,4vw,60px);margin:0 0 6px;font-weight:850;font-variation-settings:"wdth" 122;line-height:1}
+.area-panel .tag{display:block;margin-bottom:26px}
+.area-links{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));border-top:1px solid var(--line);border-left:1px solid var(--line)}
+.area-links a{padding:14px 16px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);text-decoration:none;font-size:15px;display:flex;justify-content:space-between;align-items:center;gap:10px;transition:background .2s,color .2s}
+.area-links a svg{flex:none;opacity:.5}
+
+/* Kontakt */
+.quote{display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,6vw,90px);align-items:start}
+.quote h2{font-size:clamp(38px,4.6vw,72px);margin-bottom:24px}
+.quote-intro>p{margin:0 0 30px;opacity:.8;max-width:520px}
+.contact-rows{border-top:1px solid var(--line-dark);margin-bottom:34px}
+.contact-rows a,.contact-rows div{display:flex;justify-content:space-between;align-items:baseline;gap:20px;padding:18px 0;border-bottom:1px solid var(--line-dark);text-decoration:none;font-size:clamp(17px,1.6vw,21px);font-weight:700;font-variation-settings:"wdth" 105}
+.contact-rows .tag{font-weight:600;font-size:13px;flex:none}
+.contact-rows a:hover{color:#8a6208}
+.map{aspect-ratio:16/10;border:0;width:100%;filter:grayscale(1) contrast(1.05);display:block}
+.mailbox{background:var(--berg);color:var(--grus);padding:clamp(28px,4vw,54px);position:relative;overflow:hidden}
+.mailbox::before{content:"@";position:absolute;right:-.06em;bottom:-.32em;font-size:clamp(200px,22vw,360px);font-weight:900;line-height:1;color:transparent;-webkit-text-stroke:1px rgba(232,229,222,.09);pointer-events:none}
+.mailbox h3{position:relative;margin:0 0 26px;font-size:clamp(26px,2.6vw,38px);font-weight:800;font-variation-settings:"wdth" 115;line-height:1.08}
+.mail-link{position:relative;display:flex;align-items:center;justify-content:space-between;gap:16px;text-decoration:none;padding:22px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:26px}
+.mail-link span{font-size:clamp(22px,2.3vw,34px);font-weight:700;font-variation-settings:"wdth" 100;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:linear-gradient(var(--signal),var(--signal)) 0 100%/0 2px no-repeat;padding-bottom:4px;transition:background-size .5s cubic-bezier(.2,.7,.2,1),color .3s}
+.mail-link .arrow{flex:none;width:54px;height:54px;background:var(--signal);color:var(--signal-ink);display:flex;align-items:center;justify-content:center;transition:transform .35s cubic-bezier(.2,.7,.2,1)}
+.mail-link:hover span{background-size:100% 2px;color:var(--signal)}
+.mail-link:hover .arrow{transform:translate(4px,-4px)}
+.mailbox p{margin:0 0 28px;color:#cfccc4;max-width:460px;position:relative;font-size:16px}
+.mail-actions{display:flex;gap:12px;flex-wrap:wrap;position:relative}
+.copy-msg{display:block;margin-top:14px;font-size:14px;color:var(--signal);min-height:1.4em;position:relative}
+
+/* Footer */
+footer{background:#0f1212;padding:clamp(60px,8vw,110px) 0 30px;border-top:1px solid var(--line)}
+.foot-big{font-size:clamp(48px,11vw,180px);font-weight:900;font-variation-settings:"wdth" 125;letter-spacing:-.03em;line-height:.85;margin:0 0 60px;color:transparent;-webkit-text-stroke:1px rgba(232,229,222,.3)}
+.foot-grid{display:grid;grid-template-columns:1.3fr 2fr 1fr;gap:50px;border-top:1px solid var(--line);padding-top:44px}
+.foot-grid .logo-svg{height:56px;margin-bottom:20px}
+.foot-grid p{margin:0;color:var(--sten);font-size:15px;max-width:320px}
+.foot-grid h4{margin:0 0 16px;font-size:13px;letter-spacing:.04em;font-variation-settings:"wdth" 75;color:var(--sten);font-weight:600}
+.foot-svcs{columns:2;column-gap:30px;list-style:none;margin:0;padding:0}
+.foot-svcs a,.foot-contact a{text-decoration:none;opacity:.85;font-size:15px;line-height:2}
+.foot-svcs a:hover,.foot-contact a:hover{opacity:1;color:var(--signal)}
+.foot-contact{list-style:none;margin:0;padding:0}
+.socials{display:flex;gap:10px;margin-top:22px}
+.socials a{width:44px;height:44px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;transition:border-color .2s,background .2s}
+.socials a:hover{border-color:var(--signal);background:rgba(228,170,44,.1)}
+.foot-bottom{display:flex;justify-content:space-between;gap:20px;margin-top:60px;padding-top:24px;border-top:1px solid var(--line);font-size:14px;color:var(--sten);flex-wrap:wrap}
+.foot-bottom a{text-decoration:none}
+.mcta{display:none}
+
+/* Hover endast på enheter med mus */
+@media (hover:hover){
+  .pillar:hover .pillar-img img{transform:scale(1.05);filter:saturate(1)}
+  .gallery button:hover img{transform:scale(1.04);filter:saturate(1)}
+  .gallery button:hover::after{border-color:rgba(228,170,44,.8)}
+  .area-links a:hover{background:var(--grus);color:var(--berg)}
+}
+
+/* ================= SURFPLATTA ================= */
+@media (max-width:1280px){.hud-sight,.hud-line,.hud-label,.hud-bars{display:none}}
+@media (max-width:1100px){
+  .nav-links,.nav-phone{display:none}
+  .burger{display:block}
+  .mobile-menu{display:flex;flex-direction:column;position:fixed;inset:0;z-index:55;background:#0c1311;padding:calc(var(--nav) + 30px + env(safe-area-inset-top,0px)) var(--pad) calc(30px + env(safe-area-inset-bottom,0px));clip-path:inset(0 0 100% 0);transition:clip-path .55s cubic-bezier(.7,0,.2,1);overflow:auto;visibility:hidden}
+  .mobile-menu::before{content:"";position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:64px 64px;opacity:.35;pointer-events:none;mask-image:linear-gradient(180deg,#000,transparent 70%);-webkit-mask-image:linear-gradient(180deg,#000,transparent 70%)}
+  .menu-open .mobile-menu{clip-path:inset(0 0 0 0);visibility:visible}
+  .mm-links{list-style:none;margin:0;padding:0;position:relative}
+  .mm-links li{overflow:hidden;border-bottom:1px solid var(--line)}
+  .mm-links a{display:flex;justify-content:space-between;align-items:center;text-decoration:none;font-size:clamp(34px,9vw,52px);font-weight:850;font-variation-settings:"wdth" 118;padding:12px 0;line-height:1.05;transform:translateY(100%);transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+  .mm-links a small{font-size:13px;font-weight:600;font-variation-settings:"wdth" 75;color:var(--sten)}
+  .menu-open .mm-links a{transform:none}
+  .menu-open .mm-links li:nth-child(1) a{transition-delay:.18s}
+  .menu-open .mm-links li:nth-child(2) a{transition-delay:.23s}
+  .menu-open .mm-links li:nth-child(3) a{transition-delay:.28s}
+  .menu-open .mm-links li:nth-child(4) a{transition-delay:.33s}
+  .menu-open .mm-links li:nth-child(5) a{transition-delay:.38s}
+  .mm-foot{margin-top:auto;padding-top:36px;display:grid;gap:10px;position:relative;opacity:0;transition:opacity .5s .4s}
+  .menu-open .mm-foot{opacity:1}
+  .mm-foot .btn{width:100%;padding:18px;font-size:16px}
+  .mm-foot p{margin:10px 0 0;font-size:14px;color:var(--sten);text-align:center}
+  .pillars{grid-template-columns:1fr}
+  .pillar:nth-child(odd){border-right:0}
+  .process{grid-template-columns:1fr 1fr}
+  .step,.step+.step{padding:30px 20px 30px 0;border-left:0;border-bottom:1px solid var(--line)}
+  .step:nth-child(even){padding-left:20px;border-left:1px solid var(--line)}
+  .step::before,.step+.step::before{left:0}
+  .award{grid-template-columns:1fr}
+  .award-years div{text-align:left}
+  .gallery{grid-template-columns:repeat(2,1fr)}
+}
+
+/* ================= MOBIL ================= */
+@media (max-width:860px){
+  :root{--nav:68px}
+  body{font-size:16px}
+  .logo-svg{height:36px}
+  .nav-cta .btn{display:none}
+  .sec{padding:76px 0}
+  .sec-head{grid-template-columns:1fr;gap:16px;margin-bottom:36px}
+  .sec-head p{justify-self:start;font-size:16px}
+  .sec-head h2{font-size:clamp(34px,9.6vw,54px)}
+  .kicker{margin-bottom:16px}
+
+  /* Hero */
+  .hero-grain{animation:none}
+  .hero-bg{animation:heroZoom 2.4s cubic-bezier(.2,.7,.2,1) forwards;object-position:62% 50%}
+  .hero-light{background:
+    radial-gradient(90% 50% at 85% 0%,rgba(170,215,190,.24),transparent 70%),
+    linear-gradient(180deg,rgba(6,10,9,.75) 0%,rgba(6,10,9,.1) 25%,rgba(6,10,9,.35) 50%,rgba(6,10,9,.98) 88%)}
+  .hero-content{padding-bottom:28px}
+  .hero-title{font-size:11.2vw;font-variation-settings:"wdth" 112}
+  .hero-row{margin-top:20px;gap:24px}
+  .hero-actions{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .hero-actions .btn{padding:16px 12px;font-size:15px}
+  .hero-bar .wrap{grid-template-columns:1fr 1fr}
+  .stat{padding:14px 0 14px 18px}
+  .stat:nth-child(odd){border-left:0;padding-left:0}
+  .stat:nth-child(n+3){border-top:1px solid var(--line)}
+  .stat .tag{font-size:12px}
+  .stat b{font-size:24px}
+
+  /* Partners */
+  .partners{padding:24px 0}
+  .partners-head .tag:last-child{display:none}
+  .marquee{animation-duration:28s}
+  .marquee svg{width:110px;height:40px;margin:0 22px}
+
+  /* Om oss */
+  .about{grid-template-columns:1fr;gap:34px}
+  .about-media{aspect-ratio:auto}
+  .about-media img{height:auto}
+  .about h2{font-size:clamp(32px,9vw,48px);margin-bottom:20px}
+  .checks{margin:26px 0 30px}
+  .about .btn{width:100%}
+
+  /* Pelare: svepbar karusell */
+  .pillars{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;padding:0 var(--pad) 8px;border:0;scroll-padding:0 var(--pad);scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .pillars::-webkit-scrollbar{display:none}
+  .pillar{flex:0 0 84%;grid-template-columns:1fr;grid-template-rows:auto 1fr;scroll-snap-align:start;border:1px solid var(--line);min-height:0;background:var(--skiffer)}
+  .pillar:nth-child(odd){border-right:1px solid var(--line)}
+  .pillar-img{aspect-ratio:16/11}
+  .pillar-txt{padding:22px;gap:14px}
+  .pillar-txt h3{font-size:21px}
+  .pillar-txt p{font-size:15px}
+  .swipe-hint{display:flex!important}
+
+  /* Tjänster: dragspel */
+  .services{grid-template-columns:1fr}
+  .svc-panel{display:none}
+  .svc-btn{font-size:22px;padding:16px 0}
+  li.open>.svc-btn{padding-left:14px}
+  .svc-acc{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s cubic-bezier(.2,.7,.2,1)}
+  li.open>.svc-acc{grid-template-rows:1fr}
+  .svc-acc>div{overflow:hidden}
+  .acc-in{padding:4px 0 26px}
+  .acc-img{aspect-ratio:16/10;overflow:hidden;background:#cfccc4;margin-bottom:18px}
+  .acc-img img{width:100%;height:100%;object-fit:cover}
+  .acc-in p{margin:0 0 18px;font-size:16px;opacity:.85}
+  .acc-in .svc-links{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .acc-in .btn{padding:14px 10px;font-size:14px}
+  .acc-in .btn-ghost{border-color:var(--line-dark);color:var(--berg)}
+
+  /* Process: tidslinje */
+  .process{grid-template-columns:1fr;border-top:0;border-left:1px solid var(--line);margin-left:6px}
+  .step,.step+.step,.step:nth-child(even){padding:0 0 30px 28px;border:0}
+  .step::before,.step+.step::before{left:-4px;top:6px}
+  .step .n{font-size:38px;margin-bottom:8px;display:inline-block}
+  .step:last-child{padding-bottom:0}
+
+  /* Galleri: svepbar karusell */
+  .gallery{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:10px;margin:0 calc(var(--pad)*-1);padding:0 var(--pad);scroll-padding:0 var(--pad);scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .gallery::-webkit-scrollbar{display:none}
+  .gallery button{flex:0 0 78%;scroll-snap-align:start}
+  .gal-count{display:flex;justify-content:space-between;align-items:center;margin-top:18px}
+  .gal-dots{display:flex;gap:6px}
+  .gal-dots i{width:18px;height:3px;background:var(--line);transition:background .3s,width .3s}
+  .gal-dots i.on{background:var(--signal);width:32px}
+
+  /* Varför */
+  .why{grid-template-columns:1fr;min-height:0}
+  .why-img{aspect-ratio:4/3}
+  .why-txt{padding:56px var(--pad) 70px}
+  .why-txt h2{font-size:clamp(32px,9vw,48px)}
+  .why-list li{font-size:16px}
+  .why-txt .btn{width:100%}
+
+  /* Utmärkelser */
+  .award{padding:36px 0;gap:26px}
+  .award img{width:220px}
+  .award-years b{font-size:44px}
+
+  /* Orter */
+  .areas{grid-template-columns:1fr;gap:28px}
+  .chips{flex-wrap:nowrap;overflow-x:auto;margin:0 calc(var(--pad)*-1);padding:0 var(--pad) 4px;scrollbar-width:none;scroll-snap-type:x proximity}
+  .chips::-webkit-scrollbar{display:none}
+  .chip{scroll-snap-align:start;padding:12px 16px}
+  .area-links{grid-template-columns:1fr 1fr}
+  .area-links a{padding:14px 12px;font-size:14px}
+
+  /* Kontakt */
+  .quote{grid-template-columns:1fr;gap:40px}
+  .quote h2{font-size:clamp(34px,9.6vw,52px)}
+  .mailbox{margin:0 calc(var(--pad)*-1);padding:40px var(--pad)}
+  .mail-link span{font-size:clamp(20px,6.4vw,28px)}
+  .mail-link .arrow{width:48px;height:48px}
+  .mail-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .mail-actions .btn{padding:16px 10px}
+
+  /* Footer */
+  footer{padding-bottom:calc(100px + env(safe-area-inset-bottom,0px))}
+  .foot-big{margin-bottom:40px}
+  .foot-grid{grid-template-columns:1fr;gap:38px}
+
+  /* Fast knapprad */
+  .mcta{display:grid;grid-template-columns:1fr 1fr;gap:8px;position:fixed;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:40;padding:8px;background:rgba(12,19,17,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);transform:translateY(calc(100% + 30px));transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+  .mcta.show{transform:none}
+  .menu-open .mcta{transform:translateY(calc(100% + 30px))}
+  .mcta a{padding:15px 10px;text-align:center;font-weight:700;text-decoration:none;font-size:15px;display:flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--line)}
+  .mcta a:last-child{background:var(--signal);color:var(--signal-ink);border-color:var(--signal)}
+}
+@media (max-width:380px){
+  .hero-actions,.mail-actions,.acc-in .svc-links{grid-template-columns:1fr}
+  .area-links{grid-template-columns:1fr}
+}
+.swipe-hint{display:none;justify-content:space-between;align-items:center;margin-top:16px}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+  .hud .draw{stroke-dashoffset:0}
+  .marquee{animation:none}
+  .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<!-- SVG-filter som gör loggans vita bakgrund genomskinlig och loggan vit -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <filter id="knock" color-interpolation-filters="sRGB">
+    <feColorMatrix type="matrix" values="0 0 0 0 0.91  0 0 0 0 0.9  0 0 0 0 0.87  -0.33 -1.1 -0.11 0 1.3"/>
+    <feComposite in2="SourceGraphic" operator="in"/>
+  </filter>
+  <filter id="knockDark" color-interpolation-filters="sRGB">
+    <feColorMatrix type="matrix" values="0 0 0 0 0.09  0 0 0 0 0.1  0 0 0 0 0.1  -0.26 -0.86 -0.09 0 1.12"/>
+    <feComposite in2="SourceGraphic" operator="in"/>
+  </filter>
+</svg>
+
+<!-- ============ NAV ============ -->
+<nav class="nav" id="nav" aria-label="Huvudmeny">
+  <div class="wrap nav-in">
+    <a class="logo" href="#top" aria-label="AB Maskin Support, till startsidan">
+      <svg class="logo-svg" viewBox="0 0 300 151" role="img" aria-label="AB Maskin Support"><image href="https://abmaskin.se/wp-content/uploads/sites/24/2025/01/10001-300x151.png" width="300" height="151" filter="url(#knock)"/></svg>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#tjanster">Tjänster</a></li>
+      <li><a href="#projekt">Projekt</a></li>
+      <li><a href="#om">Om oss</a></li>
+      <li><a href="#orter">Orter</a></li>
+      <li><a href="#offert">Kontakt</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a class="nav-phone" href="tel:0709101484">070-910 14 84</a>
+      <a class="btn btn-signal" href="#offert">Få gratis offert</a>
+      <button class="burger" id="burger" aria-label="Öppna meny" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <ul class="mm-links">
+    <li><a href="#tjanster">Tjänster <small>20 st</small></a></li>
+    <li><a href="#projekt">Projekt <small>Referenser</small></a></li>
+    <li><a href="#om">Om oss <small>Herrljunga</small></a></li>
+    <li><a href="#orter">Orter <small>16 st</small></a></li>
+    <li><a href="#offert">Kontakt <small>Offert</small></a></li>
+  </ul>
+  <div class="mm-foot">
+    <a class="btn btn-signal" href="tel:0709101484">Ring 070-910 14 84</a>
+    <a class="btn btn-ghost" href="mailto:info@abmaskin.se?subject=Offertf%C3%B6rfr%C3%A5gan">Mejla info@abmaskin.se</a>
+    <p>Alingsåsvägen 30, 524 33 Herrljunga</p>
+  </div>
+</div>
+
+<!-- ============ HERO ============ -->
+<header class="hero" id="top">
+  <div class="hero-media">
+    <img class="hero-bg" src="https://abmaskin.se/wp-content/uploads/sites/24/2025/03/Bergssprackning-28.webp" alt="Grävmaskin från AB Maskin Support i arbete med bergspräckning" fetchpriority="high">
+  </div>
+  <div class="hero-tint" aria-hidden="true"></div>
+  <div class="hero-light" aria-hidden="true"></div>
+  <div class="hero-grain" aria-hidden="true"></div>
+
+  <div class="hud" aria-hidden="true">
+    <svg class="hud-sight" viewBox="0 0 150 150" fill="none">
+      <path class="draw" d="M0 26V0h26M124 0h26v26M150 124v26h-26M26 150H0v-26" stroke="#E4AA2C" stroke-width="2"/>
+      <path class="draw" d="M75 58v34M58 75h34" stroke="#E8E5DE" stroke-width="1"/>
+      <circle class="draw" cx="75" cy="75" r="5" stroke="#E8E5DE" stroke-width="1"/>
+      <circle class="pulse" cx="75" cy="75" r="5" stroke="#E4AA2C" stroke-width="1"/>
+    </svg>
+    <svg class="hud-line" viewBox="0 0 150 60" fill="none">
+      <path class="draw" d="M0 60L40 6H150" stroke="#E8E5DE" stroke-width="1"/>
+      <circle cx="150" cy="6" r="3" fill="#E4AA2C"/>
+    </svg>
+    <div class="hud-label">Bergspräckning och schakt<br>kontrollerat och säkert<small>Modern maskinpark</small></div>
+    <div class="hud-bars">
+      <div><span>Planering</span><i style="--w:92%"></i></div>
+      <div><span>Schakt och bärlager</span><i style="--w:78%"></i></div>
+      <div><span>Färdig yta</span><i style="--w:64%"></i></div>
+    </div>
+  </div>
+
+  <div class="wrap hero-content">
+    <p class="tag kicker">AB Maskin Support i Herrljunga</p>
+    <h1 class="display hero-title"><span><i>Markarbeten</i></span><span><i>från start</i></span><span><i>till klart.</i></span></h1>
+    <div class="hero-row">
+      <p class="hero-lede">Dränering, asfaltering, stensättning och bergspräckning för privata och kommersiella projekt. Modern maskinpark, erfarna förare och ett helhetsansvar från planering till färdig yta.</p>
+      <div class="hero-actions">
+        <a class="btn btn-signal" href="#offert">Få gratis offert</a>
+        <a class="btn btn-ghost" href="tel:0709101484">Ring oss</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-bar">
+    <div class="wrap">
+      <div class="stat"><span class="tag">Tjänster</span><b>20</b></div>
+      <div class="stat"><span class="tag">Orter</span><b>16</b></div>
+      <div class="stat"><span class="tag">Guldbolag</span><b>2025</b></div>
+      <div class="stat"><span class="tag">Kvalitetsbolag</span><b>2024</b></div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ PARTNERS ============ -->
+<section class="partners" aria-label="Samarbetspartners">
+  <div class="wrap partners-head"><span class="tag">Samarbetspartners</span><span class="tag">Tillsammans med de bästa i regionen</span></div>
+  <div class="marquee" id="marquee"></div>
+</section>
+
+<!-- ============ OM OSS ============ -->
+<section class="sec light" id="om">
+  <div class="wrap about">
+    <div class="about-media sight reveal"><span class="c3"></span><span class="c4"></span>
+      <img src="https://abmaskin.se/wp-content/uploads/sites/24/2026/02/imgi_28_482641978_18012944540697782_3392728117838057525_n.webp" alt="AB Maskin Support på arbetsplats" loading="lazy">
+      <div class="coord">Alingsåsvägen 30<br>524 33 Herrljunga</div>
+    </div>
+    <div class="reveal">
+      <p class="tag kicker">Om AB Maskin Support</p>
+      <h2 class="display">Varje tomt är unik. Så är varje lösning.</h2>
+      <p>AB Maskin Support är din helhetspartner för markarbeten och entreprenadtjänster. Vi kombinerar gedigen erfarenhet med moderna metoder för att säkra rätt fall, stabila underlag och lång hållbarhet i varje projekt.</p>
+      <p>Vi tar hand om allt från schaktning och dränering till asfaltering, stubbfräsning och stensättning. Vår maskinpark är optimerad för både små och stora uppdrag, vilket ger effektivt utförande och rätt kostnadsbild. Vi samarbetar tätt med dig som beställare, kommunicerar tydligt och håller tidsramar.</p>
+      <ul class="checks">
+        <li>Helhetsansvar från schakt till färdig yta</li>
+        <li>Modern maskinpark och dokumenterade metoder</li>
+        <li>Tydliga offerter, fasta kontaktvägar och tidsplaner</li>
+      </ul>
+      <a class="btn btn-dark" href="#offert">Få gratis offert</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PELARE ============ -->
+<section class="sec" style="padding-bottom:0">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div><p class="tag kicker">Så arbetar vi</p><h2 class="display">Rätt underarbete. Resultat som håller.</h2></div>
+      <p>Vi tar höjd för markförhållanden, belastning, lutningar och materialval – och säkerställer att underarbetet görs rätt, från första spadtag till sista finslip.</p>
+    </div>
+  </div>
+  <div class="pillars" id="pillars">
+    <article class="pillar">
+      <div class="pillar-img"><img src="https://abmaskin.se/wp-content/uploads/sites/24/2025/03/Bergssprackning-36.webp" alt="Planering av tomt och grund" loading="lazy"></div>
+      <div class="pillar-txt"><span class="tag">Planering</span><div><h3>Skräddarsydd planering för din tomt och grund</h3><p>Vi analyserar markförhållanden, nivåer och vattenflöden och tar fram en lösning som möter dina mål. Med tydlig kravbild och rätt metodik minskar vi risker och säkrar hållbarhet.</p></div></div>
+    </article>
+    <article class="pillar">
+      <div class="pillar-img"><img src="https://abmaskin.se/wp-content/uploads/sites/24/2025/10/IMG-20251002-WA0011.webp" alt="Modern maskinpark" loading="lazy"></div>
+      <div class="pillar-txt"><span class="tag">Maskinpark</span><div><h3>Effektiv leverans med modern maskinpark</h3><p>Rätt maskin för rätt moment ger snabbare och säkrare utförande. Vi optimerar kapacitet och logistik så att projektet håller tidplan och budget.</p></div></div>
+    </article>
+    <article class="pillar">
+      <div class="pillar-img"><img src="https://abmaskin.se/wp-content/uploads/sites/24/2025/10/image3.webp" alt="Dokumenterat utförande" loading="lazy"></div>
+      <div class="pillar-txt"><span class="tag">Kvalitet</span><div><h3>Kvalitet i varje steg – dokumenterat utförande</h3><p>Vi arbetar enligt strukturerade kontroller för schakt, bärlager, dränering och återställning. Du får spårbarhet, fotodokumentation och tydliga avstämningar.</p></div></div>
+    </article>
+    <article class="pillar">
+      <div class="pillar-img"><img src="https://abmaskin.se/wp-content/uploads/sites/24/2025/03/Bergssprackning-09.webp" alt="Lokalt team på plats" loading="lazy"></div>
+      <div class="pillar-txt"><span class="tag">Lokal närvaro</span><div><h3>Lokal närvaro och snabb support</h3><p>Med team i regionen kan vi erbjuda platsbesök, snabb mobilisering och god kännedom om markförhållanden. Det ger trygg kommunikation och smidiga beslut.</p></div></div>
+    </article>
+  </div>
+  <div class="wrap swipe-hint"><span class="tag">Svep för fler</span><div class="gal-dots" id="pillarDots"></div></div>
+</section>
+
+<!-- ============ TJÄNSTER ============ -->
+<section class="sec light" id="tjanster">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div><p class="tag kicker">Vårt erbjudande</p><h2 class="display">Tjänster inom mark och entreprenad</h2></div>
+      <p>Oavsett om du anlitar oss för en enskild del eller ett totalåtagande får du en tydlig projektplan, löpande avstämningar och fasta kontaktvägar. Välj en tjänst för att läsa mer.</p>
+    </div>
+    <div class="services">
+      <ul class="svc-list" id="svcList" aria-label="Tjänster"></ul>
+      <div class="svc-panel sight" id="svcPanel" aria-live="polite"><span class="c3"></span><span class="c4"></span>
+        <div class="svc-img">
+          <img id="svcImg" src="" alt="">
+          <svg class="reticle" viewBox="0 0 400 300" preserveAspectRatio="none" aria-hidden="true"><path d="M200 135v30M185 150h30" stroke="#E4AA2C" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg>
+        </div>
+        <div class="svc-body">
+          <span class="tag" id="svcIdx"></span>
+          <h3 id="svcName"></h3>
+          <p id="svcDesc"></p>
+          <div class="svc-links">
+            <a class="btn btn-signal" href="mailto:info@abmaskin.se" id="svcQuote">Mejla om denna tjänst</a>
+            <a class="btn btn-ghost" href="#" id="svcMore" target="_blank" rel="noopener">Läs mer</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROCESS ============ -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div><p class="tag kicker">Från förfrågan till färdig yta</p><h2 class="display">Tryggt från start till klart</h2></div>
+      <p>Hör av dig så går vi igenom förutsättningarna och föreslår bästa lösningen för din tomt, grund eller utemiljö.</p>
+    </div>
+    <div class="process reveal">
+      <div class="step"><span class="n">1</span><h3>Kontakt</h3><p>Ring eller mejla oss. Vi återkommer snabbt.</p></div>
+      <div class="step"><span class="n">2</span><h3>Platsbesök</h3><p>Vi går igenom markförhållanden, nivåer och vattenflöden på plats.</p></div>
+      <div class="step"><span class="n">3</span><h3>Offert</h3><p>Du får rekommendationer, tidplan och ett tydligt prisförslag.</p></div>
+      <div class="step"><span class="n">4</span><h3>Utförande</h3><p>Rätt maskin för rätt moment, med löpande avstämningar.</p></div>
+      <div class="step"><span class="n">5</span><h3>Färdig yta</h3><p>Dokumenterat resultat med fotodokumentation och återställning.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROJEKT ============ -->
+<section class="sec" id="projekt" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div><p class="tag kicker">Våra projekt</p><h2 class="display">Referensprojekt</h2></div>
+      <p>Ett urval av uppdrag – från bergspräckning och schakt till färdiga ytor. Tryck på en bild för att se den i helskärm.</p>
+    </div>
+    <div class="gallery" id="gallery"></div>
+    <div class="gal-count"><span class="tag" id="galNum">1 / 9</span><div class="gal-dots" id="galDots"></div></div>
+  </div>
+</section>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Projektbild">
+  <button class="lb-btn lb-close" id="lbClose" aria-label="Stäng">✕</button>
+  <button class="lb-btn lb-prev" id="lbPrev" aria-label="Föregående bild">‹</button>
+  <img id="lbImg" src="" alt="">
+  <button class="lb-btn lb-next" id="lbNext" aria-label="Nästa bild">›</button>
+  <div class="lb-count tag" id="lbCount"></div>
+</div>
+
+<!-- ============ VARFÖR ============ -->
+<section class="why">
+  <div class="why-img"><img src="https://abmaskin.se/wp-content/uploads/sites/24/2025/03/Bergssprackning-41.webp" alt="AB Maskin Support i arbete" loading="lazy"></div>
+  <div class="why-txt reveal">
+    <p class="tag kicker">Varför välja oss</p>
+    <h2 class="display">Grunden för allt som byggs ovanpå.</h2>
+    <p>Vi förenar teknisk precision med praktisk erfarenhet och ger dig en lösning som håller – både tekniskt och ekonomiskt. Du får en dedikerad kontaktperson, transparent prissättning och tydliga tidsplaner. Vi planerar för hållbar dränering, rätt bärighet, korrekta nivåer och smart vattenhantering.</p>
+    <ul class="why-list">
+      <li>Lokala team i Göteborg, Alingsås och Borås</li>
+      <li>Kvalitetssäkrat underarbete och korrekt avvattning</li>
+      <li>Trygg kommunikation och lösningar som håller</li>
+    </ul>
+    <div><a class="btn btn-signal" href="tel:0709101484">Slå oss en pling</a></div>
+  </div>
+</section>
+
+<!-- ============ UTMÄRKELSER ============ -->
+<section class="light" style="padding:clamp(56px,8vw,110px) 0">
+  <div class="wrap">
+    <div class="award reveal">
+      <img src="https://abmaskin.se/wp-content/uploads/sites/24/2025/01/2-utmarkelser-fix-300x209.png" alt="AB Maskin Support – Årets Guldbolag och Kvalitetsbolag" loading="lazy">
+      <div>
+        <p class="tag kicker">Utmärkelser</p>
+        <h2 class="display">Prisbelönt kvalitet.</h2>
+        <p>AB Maskin Support är stolta vinnare av Årets Guldbolag 2025 och Årets Kvalitetsbolag 2024. Utmärkelserna är ett bevis på vårt hårda arbete, vårt engagemang för kvalitet och vår strävan att alltid leverera det bästa till våra kunder.</p>
+      </div>
+      <div class="award-years">
+        <div><b>2025</b><span class="tag">Årets Guldbolag</span></div>
+        <div><b>2024</b><span class="tag">Årets Kvalitetsbolag</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ORTER ============ -->
+<section class="sec" id="orter">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div><p class="tag kicker">Vi finns nära dig</p><h2 class="display">Lokala team i hela regionen</h2></div>
+      <p>Lokal närvaro innebär snabba insatser och god kännedom om markförhållanden. Välj din ort för att se våra tjänster där.</p>
+    </div>
+    <div class="areas">
+      <div class="chips" id="chips" role="group" aria-label="Välj ort"></div>
+      <div class="area-panel" aria-live="polite">
+        <h3 id="areaName"></h3>
+        <span class="tag" id="areaCount"></span>
+        <div class="area-links" id="areaLinks"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ KONTAKT ============ -->
+<section class="sec light" id="offert">
+  <div class="wrap quote">
+    <div class="quote-intro reveal">
+      <p class="tag kicker">Kontakta oss</p>
+      <h2 class="display">Offert och rådgivning.</h2>
+      <p>Vill du ha en snabb och tydlig offert på markarbeten, dränering eller asfaltering? Vi återkommer snabbt med rekommendationer, tidplan och ett tydligt prisförslag – utan krångel.</p>
+      <div class="contact-rows">
+        <a href="tel:0709101484"><span>070-910 14 84</span><span class="tag">Telefon</span></a>
+        <div><span>Alingsåsvägen 30, 524 33 Herrljunga</span><span class="tag">Adress</span></div>
+      </div>
+      <div class="sight"><span class="c3"></span><span class="c4"></span>
+        <iframe class="map" title="Karta till AB Maskin Support, Alingsåsvägen 30, Herrljunga" loading="lazy" src="https://maps.google.com/maps?q=Alings%C3%A5sv%C3%A4gen+30+524+33+Herrljunga&t=m&z=13&output=embed&iwloc=near"></iframe>
+      </div>
+    </div>
+
+    <div class="mailbox reveal">
+      <p class="tag kicker">Mejla din förfrågan</p>
+      <h3>Beskriv projektet, så återkommer vi med ett prisförslag.</h3>
+      <a class="mail-link" href="mailto:info@abmaskin.se?subject=Offertf%C3%B6rfr%C3%A5gan">
+        <span>info@abmaskin.se</span>
+        <i class="arrow" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 15L15 5M7 5h8v8" stroke="currentColor" stroke-width="2"/></svg></i>
+      </a>
+      <p>Tryck på adressen så öppnas ditt mejlprogram. Berätta gärna om ytans storlek, markförhållanden, ort och önskad tidplan.</p>
+      <div class="mail-actions">
+        <a class="btn btn-signal" href="mailto:info@abmaskin.se?subject=Offertf%C3%B6rfr%C3%A5gan">Skriv ett mejl</a>
+        <button class="btn btn-ghost" type="button" id="copyMail">Kopiera adressen</button>
+      </div>
+      <span class="copy-msg" id="copyMsg" role="status"></span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <p class="foot-big" aria-hidden="true">AB Maskin<br>Support</p>
+    <div class="foot-grid">
+      <div>
+        <svg class="logo-svg" viewBox="0 0 300 151" role="img" aria-label="AB Maskin Support"><image href="https://abmaskin.se/wp-content/uploads/sites/24/2025/01/10001-300x151.png" width="300" height="151" filter="url(#knock)"/></svg>
+        <p>Markarbeten och entreprenad med hög kvalitet. Tryggt utfört från start till klart.</p>
+        <div class="socials">
+          <a href="https://www.facebook.com/p/AB-Maskin-Support-100076206165079/" target="_blank" rel="noopener" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M14 8h3V4h-3c-2.8 0-4 1.7-4 4.3V10H7v4h3v8h4v-8h3l1-4h-4V8.6c0-.4.3-.6.6-.6z"/></svg></a>
+          <a href="https://www.instagram.com/abmaskinsupport/" target="_blank" rel="noopener" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
+          <a href="https://www.tiktok.com/@abmberg" target="_blank" rel="noopener" aria-label="TikTok"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16 3c.3 2.3 1.8 4 4 4.3v3.2c-1.5 0-2.9-.5-4-1.2V16a6 6 0 1 1-6-6c.3 0 .7 0 1 .1v3.3a2.8 2.8 0 1 0 1.8 2.6V3H16z"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h4>Tjänster</h4>
+        <ul class="foot-svcs" id="footSvcs"></ul>
+      </div>
+      <div>
+        <h4>Nå ut till oss</h4>
+        <ul class="foot-contact">
+          <li><a href="tel:0709101484">070-910 14 84</a></li>
+          <li><a href="mailto:info@abmaskin.se">info@abmaskin.se</a></li>
+          <li style="opacity:.85;font-size:15px;line-height:1.6;margin-top:6px">Alingsåsvägen 30<br>524 33 Herrljunga</li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="year"></span> AB Maskin Support</span>
+      <a href="https://abmaskin.se/cookie-policy-sida-eu/" target="_blank" rel="noopener">Cookie Policy</a>
+    </div>
+  </div>
+</footer>
+
+<div class="mcta" id="mcta">
+  <a href="tel:0709101484"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>Ring oss</a>
+  <a href="mailto:info@abmaskin.se?subject=Offertf%C3%B6rfr%C3%A5gan"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14"/><path d="M3 7l9 6 9-6"/></svg>Mejla oss</a>
+</div>
+
+<script>
+(function(){
+  const U = "https://abmaskin.se/wp-content/uploads/sites/24/";
+  const SITE = "https://abmaskin.se/";
+  const mqMobile = window.matchMedia("(max-width:860px)");
+  const canHover = window.matchMedia("(hover:hover)");
+
+  const IMG = {
+    b28: U+"2025/03/Bergssprackning-28.webp", b36: U+"2025/03/Bergssprackning-36.webp",
+    b41: U+"2025/03/Bergssprackning-41.webp", b09: U+"2025/03/Bergssprackning-09.webp",
+    b20: U+"2025/03/Bergssprackning-20.webp", b281: U+"2025/03/Bergssprackning-28-1-1024x683.webp",
+    wa: U+"2025/10/IMG-20251002-WA0011.webp", i3: U+"2025/10/image3.webp",
+    i0: U+"2025/10/image0-576x1024.webp", i1: U+"2025/10/image1-576x1024.webp", i2: U+"2025/10/image2-576x1024.webp",
+    d21: U+"2025/01/20251021_131222-576x1024.webp",
+    om: U+"2026/02/imgi_28_482641978_18012944540697782_3392728117838057525_n.webp"
+  };
+
+  const SERVICES = [
+    {n:"Markarbeten", s:"markarbeten", img:IMG.b36, d:"Markarbeten är grunden för ett stabilt och hållbart resultat. Vi utför schaktning, bortforsling, fyllnadsmassor, bärlager och finjustering inför nybyggnationer och ombyggnationer – med rätt nivåer, fall och packning."},
+    {n:"Dränering", s:"draenering", img:IMG.i3, d:"En korrekt utförd dränering skyddar huset mot fukt och mögel. Vi byter dräneringsrör, installerar isolering och ser till att vatten leds bort effektivt – inklusive schakt, dräneringsskivor, återfyllnad och återställning."},
+    {n:"Asfalt", s:"asfalt", img:IMG.wa, d:"Asfaltering av uppfarter, parkeringar och gångstråk med fokus på rätt bärighet och vattenavrinning. Från schaktning och bärlager till utläggning och vältning – en jämn, slitstark yta med minimalt underhåll."},
+    {n:"Stensättning", s:"stensaettning", img:IMG.d21, d:"Robusta och estetiska ytor för entréer, gångar och terrasser. Vi hjälper till med design, materialval och mönster, och säkerställer noggrant underarbete, kantstöd, fogmaterial och lutning för lång livslängd."},
+    {n:"Bergspräckning", s:"bergspraeckning", img:IMG.b28, d:"När berget står i vägen spräcker vi det kontrollerat och säkert, så att ytan kan användas för grund, uppfart eller anläggning."},
+    {n:"Schakt", s:"schakt", img:IMG.b41, d:"Schaktning för grunder, ledningar och dränering med rätt maskin för uppdraget – med planerad logistik, tillfart och bortforsling."},
+    {n:"Anläggning", s:"anlaeggning", img:IMG.b09, d:"Kompletta anläggningsarbeten för nybyggnationer, renoveringar och utemiljöer – från planering till färdig yta."},
+    {n:"Markberedning", s:"markberedning", omrade:true, img:IMG.b20, d:"Förberedelse av marken inför bygge, anläggning eller plantering, så att underlaget blir rätt från början."},
+    {n:"Asfaltsfräsning", s:"asfaltsfraesning", img:IMG.i0, d:"Fräsning av befintlig asfalt för att ta bort skadade lager, justera nivåer eller förbereda för ny beläggning."},
+    {n:"Finplanering", s:"finplanering", img:IMG.i1, d:"Noggrann finjustering av nivåer och lutningar som sista steg innan gräs, sten eller asfalt läggs."},
+    {n:"Garageuppfart", s:"garageuppfart", img:IMG.i2, d:"Uppfarter i asfalt eller sten med rätt bärlager, lutning och avvattning – byggda för att hålla för daglig belastning."},
+    {n:"Gräsmattor", s:"graesmattor", img:IMG.om, d:"Anläggning av gräsmattor med rätt jord och finplanering, för en jämn och hållbar yta."},
+    {n:"Gräv", s:"graev", img:IMG.b281, d:"Grävarbeten i alla storlekar – från mindre ledningsgravar till större schakt för grunder."},
+    {n:"Marksten", s:"marksten", img:IMG.d21, d:"Läggning av marksten för uppfarter, gångar och uteplatser, med noggrant förarbete för en stabil yta."},
+    {n:"Stenläggning", s:"stenlaeggning", img:IMG.i2, d:"Stenläggning av gångar, entréer och terrasser med rätt underlag, kantstöd och fall."},
+    {n:"Stenspräckning", s:"stenspraeckning", img:IMG.b36, d:"Spräckning av stora stenar och block som är i vägen för bygge eller anläggning."},
+    {n:"Stubbfräsning", s:"stubbfraesning", img:IMG.b20, d:"Stubbfräsning frigör ytor snabbt och skonsamt, så att marken kan användas direkt."},
+    {n:"Trädgård", s:"traedg%c3%a5rd", img:IMG.om, d:"Markarbeten för trädgården – planering, nivåer, gångar och ytor som förenar form och funktion."},
+    {n:"Slyröjning", s:"slyrojning", omrade:true, img:IMG.b09, d:"Röjning av sly och vegetation för att ta tillbaka ytor och förbereda marken för nästa steg."},
+    {n:"Hyvling", s:"hyvling", omrade:true, img:IMG.b281, d:"Hyvling av grusvägar och ytor för en jämn och körbar yta med bra avvattning."}
+  ];
+  const AREAS = [
+    ["Alingsås","alingsas",true],["Borås","boras",true],["Göteborg","goteborg",false],["Herrljunga","herrljunga",false],
+    ["Uddevalla","uddevalla",false],["Vara","vara",false],["Vårgårda","vargarda",false],["Ulricehamn","ulricehamn",false],
+    ["Falköping","falkoping",true],["Lerum","lerum",false],["Kungälv","kungalv",false],["Trollhättan","trollhattan",false],
+    ["Lidköping","lidkoping",false],["Skara","skara",false],["Jönköping","jonkoping",false],["Partille","partille",false]
+  ];
+  const url = (svc, city) => svc.omrade ? `${SITE}omrade/${svc.s}-${city}/` : `${SITE}${svc.s}-${city}/`;
+  const mail = s => `mailto:info@abmaskin.se?subject=${encodeURIComponent("Offertförfrågan: "+s)}`;
+
+  /* Partners */
+  const partners = ["2025/01/sandahlslogga.png","2025/01/Rsga-Entreprenad-logga-.png","2025/01/images.png","2025/01/logga-lindholm-akeri-2.jpg","2025/01/images-1.png","2025/01/images-2.png","2025/01/ca5321_9cb7cc42ba8c47e8ba03a09806922274mv2.png","2025/01/brandtriv.jpg","2025/01/original.png"];
+  const mq = document.getElementById("marquee");
+  mq.innerHTML=[...partners,...partners].map((p,i)=>
+    `<svg viewBox="0 0 150 54" ${i<partners.length?'role="img" aria-label="Samarbetspartner till AB Maskin Support"':'aria-hidden="true"'}><image href="${U+p}" width="150" height="54" preserveAspectRatio="xMidYMid meet" filter="url(#knockDark)"/></svg>`
+  ).join("");
+
+  /* Tjänster: panel på desktop, dragspel på mobil */
+  const list=document.getElementById("svcList");
+  const sImg=document.getElementById("svcImg"), sName=document.getElementById("svcName"), sDesc=document.getElementById("svcDesc"),
+        sIdx=document.getElementById("svcIdx"), sMore=document.getElementById("svcMore"), sQuote=document.getElementById("svcQuote");
+  const items=[];
+  SERVICES.forEach((s,i)=>{
+    const li=document.createElement("li");
+    li.innerHTML=`<button class="svc-btn" type="button" aria-expanded="false" aria-controls="acc${i}"><span>${s.n}</span><i class="ic" aria-hidden="true"></i></button>
+      <div class="svc-acc" id="acc${i}"><div><div class="acc-in">
+        <div class="acc-img"><img data-src="${s.img}" alt="${s.n} – AB Maskin Support"></div>
+        <p>${s.d}</p>
+        <div class="svc-links"><a class="btn btn-signal" href="${mail(s.n)}">Mejla oss</a><a class="btn btn-ghost" href="${url(s,"alingsas")}" target="_blank" rel="noopener">Läs mer</a></div>
+      </div></div></div>`;
+    const b=li.querySelector(".svc-btn");
+    b.addEventListener("click",()=>{
+      if(mqMobile.matches && li.classList.contains("open")){ setOpen(-1); return; }
+      selectSvc(i);
+      if(mqMobile.matches) setTimeout(()=>{ const r=b.getBoundingClientRect(); if(r.top<70) window.scrollBy({top:r.top-80,behavior:"smooth"}); },60);
+    });
+    b.addEventListener("mouseenter",()=>{ if(canHover.matches && !mqMobile.matches) selectSvc(i); });
+    b.addEventListener("keydown",e=>{
+      if(e.key==="ArrowDown"){e.preventDefault(); const n=(i+1)%SERVICES.length; selectSvc(n); items[n].querySelector("button").focus();}
+      if(e.key==="ArrowUp"){e.preventDefault(); const n=(i-1+SERVICES.length)%SERVICES.length; selectSvc(n); items[n].querySelector("button").focus();}
+    });
+    items.push(li); list.appendChild(li);
+  });
+  function setOpen(i){
+    items.forEach((li,j)=>{
+      const on=j===i; li.classList.toggle("open",on);
+      li.querySelector(".svc-btn").setAttribute("aria-expanded",on);
+      if(on){ const im=li.querySelector("img[data-src]"); if(im){ im.src=im.dataset.src; im.removeAttribute("data-src"); } }
+    });
+  }
+  function selectSvc(i){
+    setOpen(i);
+    const s=SERVICES[i];
+    sImg.style.opacity=0;
+    setTimeout(()=>{ sImg.src=s.img; sImg.alt=s.n+" – AB Maskin Support"; },150);
+    sImg.onload=()=>{ sImg.style.opacity=1; };
+    sName.textContent=s.n; sDesc.textContent=s.d;
+    sIdx.textContent=`Tjänst ${i+1} av ${SERVICES.length}`;
+    sMore.href=url(s,"alingsas"); sMore.textContent=`Läs mer om ${s.n.toLowerCase()}`;
+    sQuote.href=mail(s.n);
+  }
+  if(mqMobile.matches){ sImg.src=SERVICES[0].img; setOpen(-1); } else selectSvc(0);
+  mqMobile.addEventListener("change",e=>{ if(!e.matches && !items.some(li=>li.classList.contains("open"))) selectSvc(0); });
+
+  /* Karusell-prickar (galleri + pelare) */
+  function dots(track, dotsEl, numEl, count){
+    dotsEl.innerHTML=Array.from({length:count},()=>"<i></i>").join("");
+    const ds=[...dotsEl.children];
+    const update=()=>{
+      const kids=[...track.children]; const left=track.scrollLeft+track.clientWidth*0.35;
+      let idx=0; kids.forEach((k,j)=>{ if(k.offsetLeft-track.offsetLeft<=left) idx=j; });
+      if(track.scrollLeft+track.clientWidth>=track.scrollWidth-4) idx=count-1;
+      ds.forEach((d,j)=>d.classList.toggle("on",j===idx));
+      if(numEl) numEl.textContent=`${idx+1} / ${count}`;
+    };
+    track.addEventListener("scroll",()=>requestAnimationFrame(update),{passive:true});
+    update();
+  }
+
+  /* Galleri + lightbox */
+  const gal=[
+    [U+"2025/10/image3-1024x577.webp", U+"2025/10/image3.webp"],
+    [IMG.i1, U+"2025/10/image1.webp"],
+    [IMG.b281, U+"2025/03/Bergssprackning-28-1.webp"],
+    [IMG.i2, U+"2025/10/image2.webp"],
+    [U+"2025/03/Bergssprackning-36-683x1024.webp", IMG.b36],
+    [U+"2025/03/Bergssprackning-28-1024x683.webp", IMG.b28],
+    [IMG.i0, U+"2025/10/image0.webp"],
+    [U+"2025/03/Bergssprackning-41-683x1024.webp", IMG.b41],
+    [IMG.d21, U+"2025/01/20251021_131222.webp"]
+  ];
+  const G=document.getElementById("gallery"), lb=document.getElementById("lightbox"), lbImg=document.getElementById("lbImg"), lbCount=document.getElementById("lbCount");
+  let cur=0, lastFocus=null;
+  gal.forEach((g,i)=>{
+    const b=document.createElement("button"); b.type="button"; b.setAttribute("aria-label",`Visa projektbild ${i+1} i helskärm`);
+    const im=document.createElement("img"); im.src=g[0]; im.alt=`Referensprojekt ${i+1} – AB Maskin Support`; im.loading="lazy";
+    b.appendChild(im); b.addEventListener("click",()=>openLb(i)); G.appendChild(b);
+  });
+  dots(G, document.getElementById("galDots"), document.getElementById("galNum"), gal.length);
+  dots(document.getElementById("pillars"), document.getElementById("pillarDots"), null, 4);
+
+  function show(i){
+    cur=(i+gal.length)%gal.length;
+    lbImg.onerror=()=>{ lbImg.onerror=null; lbImg.src=gal[cur][0]; };
+    lbImg.src=gal[cur][1]; lbImg.alt=`Referensprojekt ${cur+1}`; lbCount.textContent=`${cur+1} / ${gal.length}`;
+  }
+  function openLb(i){ lastFocus=document.activeElement; show(i); lb.classList.add("open"); document.body.style.overflow="hidden"; document.getElementById("lbClose").focus(); }
+  function closeLb(){ lb.classList.remove("open"); document.body.style.overflow=""; if(lastFocus) lastFocus.focus(); }
+  document.getElementById("lbClose").onclick=closeLb;
+  document.getElementById("lbPrev").onclick=()=>show(cur-1);
+  document.getElementById("lbNext").onclick=()=>show(cur+1);
+  lb.addEventListener("click",e=>{ if(e.target===lb) closeLb(); });
+  document.addEventListener("keydown",e=>{
+    if(!lb.classList.contains("open")) return;
+    if(e.key==="Escape") closeLb();
+    if(e.key==="ArrowRight") show(cur+1);
+    if(e.key==="ArrowLeft") show(cur-1);
+  });
+  let tx=0,ty=0;
+  lb.addEventListener("touchstart",e=>{tx=e.touches[0].clientX;ty=e.touches[0].clientY},{passive:true});
+  lb.addEventListener("touchend",e=>{
+    const dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty;
+    if(Math.abs(dx)>50 && Math.abs(dx)>Math.abs(dy)) show(cur+(dx<0?1:-1));
+    else if(dy>90) closeLb();
+  });
+
+  /* Orter */
+  const chips=document.getElementById("chips"), aName=document.getElementById("areaName"), aCount=document.getElementById("areaCount"), aLinks=document.getElementById("areaLinks");
+  const arrow='<svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 11L11 3M5 3h6v6" stroke="currentColor" stroke-width="1.5"/></svg>';
+  function selectArea(i, scroll){
+    const [name,slug,ext]=AREAS[i];
+    [...chips.children].forEach((c,j)=>c.setAttribute("aria-pressed", j===i));
+    const svcs=SERVICES.filter(s=>!s.omrade||ext);
+    aName.textContent=name; aCount.textContent=`${svcs.length} tjänster i ${name}`;
+    aLinks.innerHTML=svcs.map(s=>`<a href="${url(s,slug)}" target="_blank" rel="noopener"><span>${s.n}</span>${arrow}</a>`).join("");
+    if(scroll){ const c=chips.children[i]; chips.scrollTo({left:c.offsetLeft-chips.offsetLeft-20,behavior:"smooth"}); }
+  }
+  AREAS.forEach((a,i)=>{
+    const c=document.createElement("button"); c.type="button"; c.className="chip"; c.textContent=a[0];
+    c.addEventListener("click",()=>selectArea(i,true)); chips.appendChild(c);
+  });
+  selectArea(3);
+
+  /* Kopiera mejl */
+  const copyMsg=document.getElementById("copyMsg");
+  document.getElementById("copyMail").addEventListener("click",async()=>{
+    try{ await navigator.clipboard.writeText("info@abmaskin.se"); copyMsg.textContent="Adressen är kopierad."; }
+    catch(e){ copyMsg.textContent="Kopiera manuellt: info@abmaskin.se"; }
+    setTimeout(()=>copyMsg.textContent="",3000);
+  });
+
+  /* Footer */
+  document.getElementById("footSvcs").innerHTML=SERVICES.map(s=>`<li><a href="${url(s,"alingsas")}" target="_blank" rel="noopener">${s.n}</a></li>`).join("");
+  document.getElementById("year").textContent=new Date().getFullYear();
+
+  /* Nav, mobil-CTA */
+  const nav=document.getElementById("nav"), mcta=document.getElementById("mcta"), hero=document.getElementById("top");
+  const onScroll=()=>{
+    nav.classList.toggle("scrolled", window.scrollY>40);
+    const nearEnd=window.innerHeight+window.scrollY>=document.body.scrollHeight-40;
+    mcta.classList.toggle("show", window.scrollY>hero.offsetHeight*0.6 && !nearEnd);
+  };
+  window.addEventListener("scroll",()=>requestAnimationFrame(onScroll),{passive:true}); onScroll();
+
+  const burger=document.getElementById("burger");
+  const setMenu=open=>{
+    document.body.classList.toggle("menu-open",open);
+    document.body.style.overflow=open?"hidden":"";
+    burger.setAttribute("aria-expanded",open); burger.setAttribute("aria-label",open?"Stäng meny":"Öppna meny");
+    if(open) nav.classList.add("scrolled"); else onScroll();
+  };
+  burger.addEventListener("click",()=>setMenu(!document.body.classList.contains("menu-open")));
+  document.querySelectorAll("#mobileMenu a").forEach(a=>a.addEventListener("click",()=>setMenu(false)));
+  document.addEventListener("keydown",e=>{ if(e.key==="Escape" && document.body.classList.contains("menu-open")) setMenu(false); });
+
+  /* Mjuka intoningar */
+  if("IntersectionObserver" in window){
+    const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } }),{rootMargin:"0px 0px -10% 0px"});
+    document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+  } else document.querySelectorAll(".reveal").forEach(el=>el.classList.add("in"));
+})();
+</script>
+</body>
+</html>
